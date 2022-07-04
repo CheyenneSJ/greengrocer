@@ -105,8 +105,8 @@ List<OrderModel> orders = [
       overdueDateTime: DateTime.parse(
         '2022-08-08 11:00:11.459',
       ),
-      id: 'jsjajsljslaksjs',
-      status: 'preparing_purchase',
+      id: 'Futas mensal',
+      status: 'pending_payment',
       total: 11.0,
       items: [
         CartItemModel(
@@ -126,8 +126,8 @@ List<OrderModel> orders = [
       overdueDateTime: DateTime.parse(
         '2022-08-08 11:00:11.459',
       ),
-      id: 'jsjajsljslaksjs',
-      status: 'delivered',
+      id: 'Semanal frutas Dona Maria',
+      status: 'paid',
       total: 11.0,
       items: [
         CartItemModel(

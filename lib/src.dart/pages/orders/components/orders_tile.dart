@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:greengrocer/src.dart/models/cart_item_model.dart';
 import 'package:greengrocer/src.dart/models/order_model.dart';
+import 'package:greengrocer/src.dart/pages/base/common_widgets/payment_dialog.dart';
 import 'package:greengrocer/src.dart/services/utils_services.dart';
 
 import 'order_status_widget.dart';
@@ -24,6 +25,7 @@ class OrderTile extends StatelessWidget {
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
+          initiallyExpanded: order.status == 'pending_payment',
           title: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,10 +46,12 @@ class OrderTile extends StatelessWidget {
             ],
           ),
           childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             IntrinsicHeight(
               child: Row(
                 children: [
+                  //
                   Expanded(
                     flex: 3,
                     child: SizedBox(
@@ -74,6 +78,50 @@ class OrderTile extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+            Text.rich(
+              TextSpan(
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+                children: [
+                  const TextSpan(
+                    text: 'Total ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text: utilsServices.priceToCurrency(order.total),
+                  ),
+                ],
+              ),
+            ),
+            Visibility(
+              visible: order.status == 'pending_payment',
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (_) {
+                        return PaymentDialog(
+                          order: order,
+                        );
+                      });
+                },
+                icon: Image.asset(
+                  'assets/app_images/pix.png',
+                  height: 18,
+                ),
+                label: const Text(
+                  'Ver QR Code Pix',
+                ),
               ),
             ),
           ],
