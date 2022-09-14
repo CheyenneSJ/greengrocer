@@ -9,11 +9,14 @@ import 'package:greengrocer/src.dart/pages_routes/app_pages.dart';
 import '../base/common_widgets/custom_text_field.dart';
 
 import '../base/common_widgets/app_name_widget.dart';
+import 'controller/auth_controller.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +77,7 @@ class SignInScreen extends StatelessWidget {
                           children: [
                             //email
                             CustomTextField(
+                              controller: emailController,
                               icon: Icons.email,
                               label: 'Email',
                               validator: (email) {
@@ -87,6 +91,7 @@ class SignInScreen extends StatelessWidget {
 
                             //senha
                             CustomTextField(
+                                controller: passwordController,
                                 icon: Icons.lock,
                                 label: 'Senha',
                                 isSecret: true,
@@ -104,26 +109,32 @@ class SignInScreen extends StatelessWidget {
                             //Botão de entrar
                             SizedBox(
                               height: 50,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18),
+                              child: GetX<AuthController>(
+                                  builder: (authcontroller) {
+                                return ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
                                   ),
-                                ),
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    print('Todos os campos estão válidos!');
-                                  } else {
-                                    print('Campos não válidos');
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      String email = emailController.text;
+                                      String password = passwordController.text;
+
+                                      print('Email: $email - Senha: $password');
+                                    } else {
+                                      print('Campos não válidos');
+                                    }
                                   }
-                                }
-                                //Get.offNamed(PagesRoutes.baseRoute);
-                                ,
-                                child: const Text(
-                                  'Entrar',
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              ),
+                                  //Get.offNamed(PagesRoutes.baseRoute);
+                                  ,
+                                  child: const Text(
+                                    'Entrar',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                );
+                              }),
                             )
                           ]),
                     ),
